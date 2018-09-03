@@ -7,7 +7,7 @@
                     <el-input v-model="loginForm.username"  prefix-icon="myicon myicon-user" placeholder="请输入用户名"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input v-model="loginForm.password"  prefix-icon="myicon myicon-key" placeholder="请输入密码"></el-input>
+                    <el-input type="password" v-model="loginForm.password"  prefix-icon="myicon myicon-key" placeholder="请输入密码"></el-input>
                 </el-form-item>
 
                 <el-form-item>
@@ -21,6 +21,8 @@
 
 
 <script>
+//这里使用{}是因为引入的是这个文件中的一个部分 括号中的就是我们想引入的那部分
+import { login } from '@/api/index.js'
 export default {
   data() {
     return {
@@ -42,7 +44,24 @@ export default {
     submitForm(a) {
       this.$refs[a].validate(valid => {
         if (valid) {
-         console.log(this.$refs.loginForm);
+          //调用登录函数 发送axios请求 成功之后调用.then
+         login(this.loginForm).then((res)=>{
+           console.log(res)
+           if(res.meta.status==200){
+             //给出提示信息
+             this.$message({
+               message:res.meta.msg,
+               type:'success'
+             })
+              //实现跳转
+               this.$router.push({name:'Home'})
+           }else{
+             this.$message({
+               message:res.meta.msg,
+               type:'error'
+             })
+           }
+         })
         } else {
           console.log("提交错误!");
           return false;
