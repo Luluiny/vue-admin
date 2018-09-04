@@ -49,10 +49,13 @@ export default {
            console.log(res)
            if(res.meta.status==200){
              //给出提示信息
-             this.$message({
-               message:res.meta.msg,
-               type:'success'
-             })
+            //  this.$message({
+            //    message:res.meta.msg,
+            //    type:'success'//直接跳转页面就不用提示了
+            //  })
+              //登录成功之后设置token保存到本地存储
+              localStorage.setItem('mytoken',res.data.token)
+             
               //实现跳转
                this.$router.push({name:'Home'})
            }else{
