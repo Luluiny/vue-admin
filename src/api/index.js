@@ -26,7 +26,26 @@ return axios.post('login',params).then((res)=>{
 
 //获取所有数据
 export const getAllUserList=(pa)=>{
-    return axios.get('users',{params:pa}).then((res)=>{
-        return res
+    return axios.get('users',pa).then((res)=>{
+        return res.data
     })
 }
+
+//添加用户
+export const addUser=(pa)=>{
+    return axios.post('users',pa).then((res)=>{
+        return res.data
+    })
+}
+//编辑
+export const editUser=(pa)=>{
+return axios.put(`users/${pa.id}`,pa).then((res)=>{
+    return res.data
+})
+}
+//删除
+export const deleteUser=(id)=>{
+    return axios.delete(`users/${id}`).then((res)=>{
+        return res.data
+    })
+    }

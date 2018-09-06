@@ -3,8 +3,9 @@
         <el-container>
             <el-aside width="auto">
                 <div class="logo"></div>
-                <el-menu default-active="1-1" 
+                <el-menu 
                 class="el-menu-admin" 
+                :router='true'
                 :unique-opened='true'
                 :collapse='isCollapse' 
                 @open="handleOpen"
@@ -18,7 +19,7 @@
                             <i class="el-icon-location"></i>
                             <span>用户管理</span>
                         </template>
-                        <el-menu-item index="1-1" >用户列表</el-menu-item>
+                        <el-menu-item index="user" >用户列表</el-menu-item>
                     </el-submenu>
                     <el-menu-item index="2">
                         <i class="el-icon-menu"></i>
