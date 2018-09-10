@@ -12,10 +12,8 @@
         </el-upload>
         <!-- 显示大图的弹出框 -->
         <el-dialog title="提示" 
-            :visible.sync="dialogVisible" 
-            width="70%"
+            :visible.sync="dialogVisible"  width="70%" >
             <img :src="imagesrc" alt="">
-            >
         </el-dialog>
         
     </div>
@@ -41,7 +39,8 @@ export default {
     },
     //实现预览
     handlePreview(file) {
-      console.log(file);
+        this.imagesrc='http://localhost:8888/'+file.response.data.tmp_path
+        this.dialogVisible=true
     }
   }
 };

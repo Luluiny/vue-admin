@@ -18,6 +18,9 @@ export default {
         return {
             searchValue:''
         }
+    },
+    methods: {
+        searchUser(){}
     }
 }
 </script>
