@@ -24,14 +24,15 @@
                 这里面的slot-scope可以拿到数据 这个属性的scop.row就是我们需要的这一行的对应的数据 -->
         <el-table-column label="状态">
           <template slot-scope="scope">
-            <el-switch active-color="#13ce66" inactive-color="#ff4949" v-model="scope.row.mg_state">
+            <el-switch @change="changeuser(scope.row)" active-color="#13ce66" inactive-color="#ff4949" v-model="scope.row.mg_state">
             </el-switch>
+            <!-- 开关使用click是获取不到的 事件不会触发 要使用change才可以 -->
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="primary" icon="el-icon-edit" title='编辑' @click="shouEditdialog(scope.row)"></el-button>
-            <el-button type="primary" icon="el-icon-share" title='授权角色'></el-button>
+            <el-button type="primary" icon="el-icon-share" title='授权角色' @click="grantUsers(scope.row)"></el-button>
             <el-button type="primary" icon="el-icon-delete" title='删除' @click="deleteUserList(scope.row.id)"></el-button>
           </template>
         </el-table-column>
@@ -81,16 +82,51 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="授权角色" :visible.sync="grantdialogFormVisible">
+      <!-- 授权角色
+              注册事件 弹出对话框
+              展示用户信息 和 角色信息
+              完成角色授权 关闭对话框 -->
+      <el-form :model="grantform" :rules='rules' label-width='100px' ref='grantform'>
+        <el-form-item label="用户名" prop='username'>
+          <el-input v-model="grantform.username" style='width:100px' disabled></el-input>
+        </el-form-item>
+        <el-form-item label="角色" prop='username'>
+          <el-select v-model="grantform.rid" placeholder="请选择">
+            <el-option v-for="item in roleList" 
+            :key="item.id" 
+            :label="item.roleName" 
+            :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="grantdialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="grantformconfir">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 
 </template>
 
 <script>
-import { getAllUserList, addUser, editUser, deleteUser } from "@/api/index.js";
+import {
+  getAllUserList,
+  addUser,
+  editUser,
+  deleteUser,
+  changeuserState,
+  shouRoles,grantUsers
+} from "@/api/index.js";
 export default {
   data() {
     return {
+      roleList: [],
       input5: "",
+      
       total: 0,
       pagesize: 2,
       pagenum: 1,
@@ -98,6 +134,7 @@ export default {
       dialogTableVisible: false,
       adddialogFormVisible: false,
       editdialogFormVisible: false,
+      grantdialogFormVisible: false,
       addform: {
         username: "",
         mobile: "",
@@ -115,6 +152,11 @@ export default {
         email: "",
         id: ""
       },
+      grantform: {
+        username: "",
+        id: "",
+        rid: ""
+      },
       formLabelWidth: "120px",
       userList: [],
       rules: {
@@ -128,6 +170,58 @@ export default {
     };
   },
   methods: {
+    //实现角色授权
+    grantformconfir(){
+        grantUsers(this.grantform).then(res=>{
+          console.log(res)
+          //请求成功之后
+          if(res.meta.status===200){
+            this.$message({
+            message: res.meta.msg,
+            type: "success"
+          })
+          }else{
+            this.$message({
+            message: res.meta.msg,
+            type: "error"
+          })
+          }
+          this.grantdialogFormVisible=false
+        })
+    },
+    //显示授权角色对话框
+    grantUsers(row) {
+      console.log(1111111333333333)
+      this.grantdialogFormVisible = true
+      this.grantform.username=row.username
+      this.grantform.id=row.id
+      //需要展示的是用户名 
+      shouRoles().then(res=>{
+        //console.log(res)
+        this.roleList=res.data
+      })
+    },
+    //修改用户状态
+    changeuser(row) {
+      console.log(row);
+      //console.log(11111111111)
+      changeuserState({ id: row.id, state: row.mg_state }).then(res => {
+        console.log(res);
+        //前端的请求成功之后 判断后台返回来的结果是否成功 给出提示
+        if (res.meta.status === 200) {
+          this.$message({
+            message: res.meta.msg,
+            type: "success"
+          });
+        } else {
+          this.$message({
+            message: res.meta.msg,
+            type: "error",
+            duration: 500
+          });
+        }
+      });
+    },
     //实现删除 删除传入id号 点击之后弹出一个确认框提示是否真的删除
     deleteUserList(id) {
       this.$confirm(`此操作将永久删除id为${id}的用户, 是否继续?`, "提示", {
@@ -139,7 +233,7 @@ export default {
           //点击确认之后调用接口
           deleteUser(id).then(res => {
             //console.log(111111111111)
-            console.log(res)
+            console.log(res);
             // console.log(111111111111)
             if (res.meta.status === 200) {
               this.$message({
@@ -154,7 +248,7 @@ export default {
                 message: res.meta.msg
               });
             }
-          })
+          });
         })
         .catch(() => {
           this.$message({
@@ -231,9 +325,9 @@ export default {
                 message: res.meta.msg,
                 type: "success"
               });
-              this.initUserList()
+              this.initUserList();
               //重置清空对话框
-              this.$refs[addform].resetFields()
+              this.$refs[addform].resetFields();
             } else {
               this.$message.error(res.meta.msg);
             }

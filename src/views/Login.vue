@@ -57,7 +57,9 @@ export default {
               localStorage.setItem('mytoken',res.data.token)
              
               //实现跳转
+                this.$store.dispatch('setusernameAction',res.data.username)
                this.$router.push({name:'Home'})
+             
            }else{
              this.$message({
                message:res.meta.msg,

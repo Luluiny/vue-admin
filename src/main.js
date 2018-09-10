@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import './styles/index.scss'
 
+import store from '@/store/store.js'
 
 
 Vue.config.productionTip = false
@@ -29,6 +30,10 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  store: store,
   components: { App },
   template: '<App/>'
 })
+
+
+
