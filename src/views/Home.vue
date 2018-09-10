@@ -1,6 +1,7 @@
 <template>
     <div class="home">
         <el-container>
+          
             <el-aside width="auto">
                 <div class="logo"></div>
                 <el-menu class="el-menu-admin" :router='true' :unique-opened='true' :collapse='isCollapse' @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
@@ -14,7 +15,10 @@
                             <span>{{subitem.authName}}</span>
                         </el-menu-item>
                     </el-submenu>
- 
+
+
+
+
                 </el-menu>
             </el-aside>
             <el-container>
