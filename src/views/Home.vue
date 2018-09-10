@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <el-container>
-          
+
             <el-aside width="auto">
                 <div class="logo"></div>
                 <el-menu class="el-menu-admin" :router='true' :unique-opened='true' :collapse='isCollapse' @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
@@ -49,17 +49,17 @@ export default {
   },
   mounted() {
     getMenus().then(res => {
-        console.log(res)
+       // console.log(res)
         
       this.menusList = res.data;
     });
   },
   methods: {
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+      //console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+      //console.log(key, keyPath);
     },
     logout(){
         localStorage.removeItem('mytoken')

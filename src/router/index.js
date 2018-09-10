@@ -18,6 +18,8 @@ import List from '@/views/good/List.vue'
 
 import Add from '@/views/good/Add.vue'
 
+import Report from '@/views/report/Report.vue'
+
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -74,10 +76,10 @@ export default new Router({
       //  name: 'Order',
       //  component: Order
       // },
-      // { path: 'reports',
-      //  name: 'Report',
-      //  component: Report
-      // },
+      { path: 'reports',
+       name: 'Report',
+       component: Report
+      }
       ]
     }
   ]

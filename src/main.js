@@ -5,6 +5,34 @@ import App from './App'
 import router from './router'
 import './styles/index.scss'
 
+//引入地图
+import VueAMap from 'vue-amap';
+//使用地图
+Vue.use(VueAMap)
+
+// 初始化vue-amap
+VueAMap.initAMapApiLoader({
+  // 高德的key
+  key: '6a204f2b675f32f8849ec4b6b7c21e5c',
+  // 插件集合
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  // 高德 sdk 版本，默认为 1.4.4
+  v: '1.4.4'
+})
+
+//引入富文本编辑器
+import VueQuillEditor from 'vue-quill-editor'
+//引入富文本样式
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+//使用
+Vue.use(VueQuillEditor)
+
+//使用echarts图形
+import ECharts from 'vue-echarts'
+Vue.component('chart', ECharts)
+
 import store from '@/store/store.js'
 
 
